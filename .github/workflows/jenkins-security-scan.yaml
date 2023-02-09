@@ -67,7 +67,7 @@ jobs:
           codeql database analyze --sarif-add-query-help --format=sarifv2.1.0 --output=output.sarif "$GITHUB_WORKSPACE/database" "$CODEQL_RULES_DIR/src/" codeql/java-queries:AlertSuppression.ql codeql/java-queries:AlertSuppressionAnnotations.ql || { echo "Failed to analyze database" >&2 ; exit 1 ; }
           echo "::endgroup::"
 
-          # Manually remove suppressed warnings because GitHub
+          # Manually remove suppressed warnings because GitHub Code Scanning does not support inline suppresions
           jq 'del(.runs[].results[] | select( .suppressions | length != 0 ))' output.sarif > output-without-suppressed.sarif
           # Prevent conflicts with otherwise set up CodeQL scan
           jq 'setpath(path(.runs[].tool.driver.name); "Jenkins Security Scan") | setpath(path(.runs[].tool.driver.organization); "Jenkins Project")' output-without-suppressed.sarif > jenkins-security-scan.sarif
@@ -75,7 +75,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: |
-            output-without-suppressed.sarif
+            output.sarif
             jenkins-security-scan.sarif
           name: Jenkins Security Scan SARIF
       - name: Upload Scan Result
