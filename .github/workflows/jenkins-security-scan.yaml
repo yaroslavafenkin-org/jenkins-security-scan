@@ -74,7 +74,9 @@ jobs:
       - name: Archive SARIF
         uses: actions/upload-artifact@v3
         with:
-          path: jenkins-security-scan.sarif
+          path: |
+            output-without-suppressed.sarif
+            jenkins-security-scan.sarif
           name: Jenkins Security Scan SARIF
       - name: Upload Scan Result
         uses: github/codeql-action/upload-sarif@v2
