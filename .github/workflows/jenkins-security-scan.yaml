@@ -70,7 +70,7 @@ jobs:
           # Manually remove suppressed warnings because GitHub
           jq 'del(.runs[].results[] | select( .suppressions | length != 0 ))' output.sarif > output-without-suppressed.sarif
           # Prevent conflicts with otherwise set up CodeQL scan
-          jq 'setpath(path(.runs[].tool.driver.name); "Jenkins Security Scan") | setpath(path(.runs[].tool.driver.organization); "Jenkins Project")' output.sarif > jenkins-security-scan.sarif
+          jq 'setpath(path(.runs[].tool.driver.name); "Jenkins Security Scan") | setpath(path(.runs[].tool.driver.organization); "Jenkins Project")' output-without-suppressed.sarif > jenkins-security-scan.sarif
       - name: Archive SARIF
         uses: actions/upload-artifact@v3
         with:
