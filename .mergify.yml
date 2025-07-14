@@ -1,9 +1,10 @@
 merge_protections:
-  - name: "'\"+alert(1)+\"'<img/src/onerror=alert(1)/>exzotiqq"
-    description: "'\"+alert(1)+\"'<img/src/onerror=alert(1)/>exzotiqq"
+  - name: Only merge with validation label<h1>Test</h1>
+    description: Only merge with validation label<h1>Test</h1>
     if:
+      - author >= <h1>yaroslavafenkin</h1>
       - base = main
     success_conditions:
-      - "title ~=
-        ^(fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)(?:(.+))\
-        ?:"
+      - or:
+          - label = Validation needed
+          - label = Validation done
